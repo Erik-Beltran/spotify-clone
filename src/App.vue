@@ -8,7 +8,6 @@ import AsideMenu from './components/AsideMenu.vue'
   <aside class="[grid-area:aside] flex-col flex overflow-y-auto">
     <AsideMenu />
   </aside>
-  <main class="[grid-area:main]">main</main>
   <footer class="[grid-area:player]">player</footer>
   <!-- <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
@@ -20,9 +19,16 @@ import AsideMenu from './components/AsideMenu.vue'
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
-  </header> 
-
-  <RouterView />-->
+  </header> -->
+  <RouterView />
 </template>
 
-<style></style>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active en <2.1.8 */ {
+  opacity: 0;
+}
+</style>
