@@ -2,13 +2,14 @@
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import AsideMenu from './components/AsideMenu.vue'
+import Player from './components/Player.vue'
 </script>
 
 <template>
   <aside class="[grid-area:aside] flex-col flex overflow-y-auto">
     <AsideMenu />
   </aside>
-  <footer class="[grid-area:player]">player</footer>
+  <footer class="[grid-area:player] min-h-[100px]"><Player /></footer>
   <!-- <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 

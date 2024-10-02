@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { playlists } from '../lib/data'
-import PlayListItemCard from './icons/PlayListItemCard.vue'
+import PlayListItemCard from './PlayListItemCard.vue'
 </script>
 
 <template>

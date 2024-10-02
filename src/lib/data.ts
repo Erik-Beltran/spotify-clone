@@ -310,3 +310,15 @@ export const songs: Song[] = [
     duration: '4:20'
   }
 ]
+
+export const getMusic = (id) => {
+  const playList = allPlaylists.find((playList) => playList.id === id)
+  const playListSongs = songs.filter((song) => song.albumId === playList?.albumId)
+
+  return { playList, playListSongs }
+}
+
+// export const getPlayListSongs = (id) => {
+//   const playListSongs = songs.filter((song) => song.albumId === playList?.albumId)
+//   return playListplayListSongs
+// }
