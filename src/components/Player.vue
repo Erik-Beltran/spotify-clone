@@ -14,6 +14,10 @@ import VolumeDownIcon from './icons/IconVolumeDown.vue'
 import VolumeUpIcon from './icons/IconVolumeUp.vue'
 import VolumeMuteIcon from './icons/IconVolumeMute.vue'
 
+import { formatTime } from '../util/formatetter'
+import { onMounted } from 'vue'
+import { onBeforeUnmount } from 'vue'
+
 const audioStore = useAudioStore(pinia)
 
 const isPlaying = computed(() => audioStore.isPlaying)
@@ -24,6 +28,8 @@ const audioSrc = ref('')
 const isReadyToPlay = ref(false)
 const volumeRef = ref(100)
 const previousVolumeRef = ref(100)
+const duration = ref<number | null>(null)
+const currentTime = ref(0)
 
 const handleClickVolumen = () => {
   const isVolumeSilenced = volumeRef.value == 0
@@ -52,6 +58,30 @@ const onCanPlay = () => {
   playAudio()
 }
 
+const onLoadedMetadata = () => {
+  if (audioElement.value) {
+    duration.value = audioElement.value.duration
+  }
+}
+
+const handleTimeUpdate = () => {
+  if (audioElement.value) {
+    currentTime.value = audioElement.value.currentTime
+  }
+}
+
+onMounted(() => {
+  if (audioElement.value) {
+    audioElement.value.addEventListener('timeupdate', handleTimeUpdate)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (audioElement.value) {
+    audioElement.value.removeEventListener('timeupdate', handleTimeUpdate)
+  }
+})
+
 watch(
   () => isPlaying.value,
   (newValue: any) => {
@@ -67,7 +97,6 @@ watch(
       audioSrc.value = `/music/${playlist?.id}/0${song.id}.mp3`
 
       isReadyToPlay.value = false
-
       if (audioElement.value) {
         audioElement.value.load()
       }
@@ -82,18 +111,43 @@ watch(
     previousVolumeRef.value = oldValue
   }
 )
+
+const updateVolume = (newValue) => {
+  audioElement.value.volume = newValue / 100
+}
+
+const updatePlaybackTime = (event) => {
+  const value = event.target.value
+  audioElement.value.currentTime = value
+}
 </script>
 <template>
   <div class="flex flex-row justify-between w-full px-4 z-50" v-if="currentMusic.song">
-    <div><CurrentSong :song="currentMusic.song" /></div>
-    <div class="grid place-content-center gap-4 flex-1">
-      <button
-        @click="audioStore.setIsPlaying(!isPlaying)"
-        class="bg-white rounded-full p-2 text-black"
-      >
-        <PauseIcon v-if="isPlaying" />
-        <PlayIcon v-else />
-      </button>
+    <div class="w-[200px]">
+      <CurrentSong :song="currentMusic.song" />
+    </div>
+    <div className="grid place-content-center gap-4 flex-1">
+      <div className="flex justify-center flex-col items-center">
+        <button
+          @click="audioStore.setIsPlaying(!isPlaying)"
+          class="bg-white rounded-full p-2 text-black"
+        >
+          <PauseIcon v-if="isPlaying" />
+          <PlayIcon v-else />
+        </button>
+        <div className="flex gap-x-3 text-xs pt-2">
+          <span>{{ formatTime(currentTime) }}</span>
+          <input
+            class="bg-white hover:accent-green-500 hover:appearance-auto rounded-lg w-full h-2 accent-white cursor-pointer"
+            type="range"
+            min="0"
+            :max="duration"
+            v-model="currentTime"
+            @input="updatePlaybackTime"
+          />
+          <span>{{ formatTime(duration) }}</span>
+        </div>
+      </div>
     </div>
     <div class="flex justify-center items-center gap-x-1">
       <button @click="handleClickVolumen">
@@ -101,8 +155,13 @@ watch(
         <VolumeDownIcon v-else-if="volumeRef <= 75" />
         <VolumeUpIcon v-else />
       </button>
-      <Slider v-model:value="volumeRef" />
+      <Slider :initialValue="volumeRef" @update:value="updateVolume" :max="100" />
     </div>
   </div>
-  <audio ref="audioElement" :src="audioSrc" @canplay="onCanPlay"></audio>
+  <audio
+    ref="audioElement"
+    :src="audioSrc"
+    @canplay="onCanPlay"
+    @loadedmetadata="onLoadedMetadata"
+  ></audio>
 </template>

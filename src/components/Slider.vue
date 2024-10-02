@@ -1,4 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { watch } from 'vue'
+
+const props = defineProps<{
+  max: Number
+  initialValue: Number
+}>()
+
+const { max, initialValue } = props
+const value = ref(initialValue)
+
 const emit = defineEmits()
 
 const updateValue = (event: any) => {
@@ -12,6 +23,9 @@ const updateValue = (event: any) => {
     type="range"
     class="bg-white hover:accent-green-500 hover:appearance-auto rounded-lg w-full h-2 accent-white cursor-pointer"
     @input="updateValue($event)"
+    :max="max"
+    min="0"
+    v-model="value"
   />
 </template>
 
