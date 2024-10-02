@@ -60,7 +60,5 @@ watch(
   <button @click="handleClick" class="card-play-button rounded-full bg-green-400 p-4 text-black">
     <PauseIcon v-if="isPlayingPlayList" />
     <PlayIcon v-else />
-
-    {{ isPlayingPlayList }}
   </button>
 </template>
