@@ -10,3 +10,14 @@
   background-color: #000;
   color: white;
 }
+
+@media (max-width: 1024px) {
+  #app {
+    grid-template-areas:
+      'main'
+      'player'
+      'aside';
+    grid-template-columns: 1fr; /* Una sola columna */
+    grid-template-rows: auto auto auto; /* Ajusta las filas según contenido */
+  }
+}

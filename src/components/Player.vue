@@ -22,6 +22,7 @@ const audioStore = useAudioStore(pinia)
 
 const isPlaying = computed(() => audioStore.isPlaying)
 const currentMusic = computed(() => audioStore.currentMusic)
+const darkColor = computed(() => audioStore.currentMusic.playlist?.color.dark || '#000')
 
 const audioElement = ref(null)
 const audioSrc = ref('')
@@ -30,6 +31,17 @@ const volumeRef = ref(100)
 const previousVolumeRef = ref(100)
 const duration = ref<number | null>(null)
 const currentTime = ref(0)
+const isMobile = ref(window.innerWidth < 1024)
+
+const updateMobileStatus = () => {
+  isMobile.value = window.innerWidth < 1024
+}
+
+const backgroundStyle = computed(() => {
+  return isMobile.value
+    ? `background: linear-gradient(to bottom, ${darkColor.value} 10%, #18181b 60%);`
+    : 'background: none;'
+})
 
 const handleClickVolumen = () => {
   const isVolumeSilenced = volumeRef.value == 0
@@ -74,12 +86,15 @@ onMounted(() => {
   if (audioElement.value) {
     audioElement.value.addEventListener('timeupdate', handleTimeUpdate)
   }
+
+  window.addEventListener('resize', updateMobileStatus)
 })
 
 onBeforeUnmount(() => {
   if (audioElement.value) {
     audioElement.value.removeEventListener('timeupdate', handleTimeUpdate)
   }
+  window.removeEventListener('resize', updateMobileStatus)
 })
 
 watch(
@@ -122,11 +137,15 @@ const updatePlaybackTime = (event) => {
 }
 </script>
 <template>
-  <div class="flex flex-row justify-between w-full px-4 z-50" v-if="currentMusic.song">
+  <div
+    class="flex flex-row justify-between w-full px-4 z-50 max-md:rounded-md max-md:p-2"
+    :style="backgroundStyle"
+    v-if="currentMusic.song"
+  >
     <div class="w-[200px]">
       <CurrentSong :song="currentMusic.song" />
     </div>
-    <div className="grid place-content-center gap-4 flex-1">
+    <div className="grid place-content-center gap-4 lg:flex-1">
       <div className="flex justify-center flex-col items-center">
         <button
           @click="audioStore.setIsPlaying(!isPlaying)"
@@ -135,7 +154,7 @@ const updatePlaybackTime = (event) => {
           <PauseIcon v-if="isPlaying" />
           <PlayIcon v-else />
         </button>
-        <div className="flex gap-x-3 text-xs pt-2 items-center">
+        <div className="hidden  lg:flex gap-x-3 text-xs pt-2 items-center">
           <span v-text="formatTime(currentTime)" />
           <input
             class="bg-white hover:accent-green-500 hover:appearance-auto rounded-lg h-2 accent-white cursor-pointer w-[400px]"
@@ -149,7 +168,7 @@ const updatePlaybackTime = (event) => {
         </div>
       </div>
     </div>
-    <div class="flex justify-center items-center gap-x-1">
+    <div class="hidden lg:flex justify-center items-center gap-x-1">
       <button @click="handleClickVolumen">
         <VolumeMuteIcon v-if="volumeRef == 0" />
         <VolumeDownIcon v-else-if="volumeRef <= 75" />

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
 import AsideMenu from './components/AsideMenu.vue'
 import Player from './components/Player.vue'
 </script>
@@ -9,18 +8,7 @@ import Player from './components/Player.vue'
   <aside class="[grid-area:aside] flex-col flex overflow-y-auto">
     <AsideMenu />
   </aside>
-  <footer class="[grid-area:player] min-h-[100px]"><Player /></footer>
-  <!-- <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header> -->
+  <footer class="[grid-area:player] lg:min-h-[100px]"><Player /></footer>
   <RouterView />
 </template>
 

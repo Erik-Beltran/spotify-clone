@@ -33,7 +33,7 @@ watch(
     <div
       :class="`absolute right-4 bottom-20  transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 z-10 ${activeItem ? 'opacity-100 translate-y-0' : 'translate-y-4 opacity-0 '}`"
     >
-      <CardPlayButton :id="id" />
+      <CardPlayButton :id="id" class="hidden lg:block" />
     </div>
     <RouterLink
       :to="{ name: 'playlist', params: { id: id } }"
