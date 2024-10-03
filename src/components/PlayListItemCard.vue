@@ -1,14 +1,29 @@
 <script setup lang="ts">
 import { type Playlist } from '@/lib/data'
 import CardPlayButton from './CardPlayButton.vue'
+import { useAudioStore } from '@/stores/audio'
+import { pinia } from '@/stores/pinia'
+import { ref } from 'vue'
+import { watch } from 'vue'
 
 const props = defineProps<{
   playlist: Playlist
 }>()
 
+const audioStore = useAudioStore(pinia)
+
 const { playlist } = props
 const { artists, cover, id, title } = playlist
 const artistsString = artists.join(', ')
+
+const activeItem = ref(false)
+
+watch(
+  () => audioStore.currentMusic.playlist,
+  (newValue: any) => {
+    activeItem.value = newValue.id === id
+  }
+)
 </script>
 
 <template>
@@ -16,7 +31,7 @@ const artistsString = artists.join(', ')
     class="group relative hover:bg-zinc-800 shadow-lg hover:shadow-xl bg-zinc-500/30 rounded-md ransi transition-all duration-300"
   >
     <div
-      class="absolute right-4 bottom-20 translate-y-4 transition-all duration-500 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10"
+      :class="`absolute right-4 bottom-20  transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 z-10 ${activeItem ? 'opacity-100 translate-y-0' : 'translate-y-4 opacity-0 '}`"
     >
       <CardPlayButton :id="id" />
     </div>

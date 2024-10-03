@@ -42,7 +42,7 @@ const handleClickVolumen = () => {
 }
 
 const playAudio = () => {
-  if (audioElement.value && isReadyToPlay.value) {
+  if (audioElement.value && isReadyToPlay.value && isPlaying.value) {
     audioElement.value.play()
   }
 }
@@ -135,17 +135,17 @@ const updatePlaybackTime = (event) => {
           <PauseIcon v-if="isPlaying" />
           <PlayIcon v-else />
         </button>
-        <div className="flex gap-x-3 text-xs pt-2">
-          <span>{{ formatTime(currentTime) }}</span>
+        <div className="flex gap-x-3 text-xs pt-2 items-center">
+          <span v-text="formatTime(currentTime)" />
           <input
-            class="bg-white hover:accent-green-500 hover:appearance-auto rounded-lg w-full h-2 accent-white cursor-pointer"
+            class="bg-white hover:accent-green-500 hover:appearance-auto rounded-lg h-2 accent-white cursor-pointer w-[400px]"
             type="range"
             min="0"
             :max="duration"
             v-model="currentTime"
             @input="updatePlaybackTime"
           />
-          <span>{{ formatTime(duration) }}</span>
+          <span v-if="duration" v-text="formatTime(duration)" />
         </div>
       </div>
     </div>
