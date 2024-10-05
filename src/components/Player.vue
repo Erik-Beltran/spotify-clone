@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useAudioStore } from '@/stores/audio'
 import { pinia } from '@/stores/pinia'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { watch } from 'vue'
 
 import CurrentSong from './CurrentSong.vue'
