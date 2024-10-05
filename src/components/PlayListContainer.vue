@@ -17,7 +17,7 @@ const playList = ref(allPlaylists.find((playList) => playList.id === id))
 const playListSongs = ref(songs.filter((song) => song.albumId === playList.value?.albumId))
 const darkColor = ref(playList.value?.color.dark)
 
-const songsList = computed(() => playListSongs)
+const songsList = computed(() => playListSongs.value)
 
 watch(
   () => route.params.id,
@@ -31,7 +31,7 @@ watch(
 <template>
   <div id="playlist-container" class="relative bg-zinc-900 flex-col flex h-full overflow-x-hidden">
     <div class="relative z-10 px-6 pt-10">
-      <button @click="this.$router.go(-1)" class="blcok lg:hidden">
+      <button @click="$router.go(-1)" class="blcok lg:hidden">
         <ArrowBackIcon />
       </button>
 

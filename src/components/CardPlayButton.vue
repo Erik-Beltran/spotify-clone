@@ -6,11 +6,13 @@ import PlayIcon from './icons/IconPlay.vue'
 import { computed, watch } from 'vue'
 import { getMusic } from '@/lib/data'
 import { ref } from 'vue'
+import { onBeforeRouteUpdate } from 'vue-router'
 
 const props = defineProps({
   id: String
 })
 const { id } = props
+const displayedId = ref(id) // Variable reactiva para mostrar el ID
 
 const audioStore = useAudioStore(pinia)
 const isPlaying = computed(() => audioStore.isPlaying)
@@ -22,7 +24,7 @@ const handleClick = () => {
     return
   }
 
-  const { playList, playListSongs } = getMusic(id)
+  const { playList, playListSongs } = getMusic(displayedId.value)
 
   audioStore.setCurrentMusic({
     songs: playListSongs,
@@ -36,7 +38,7 @@ const handleClick = () => {
 watch(
   () => audioStore.currentMusic.playlist,
   (newId: any) => {
-    if (isPlaying.value && newId?.id === id) {
+    if (isPlaying.value && newId?.id === displayedId.value) {
       isPlayingPlayList.value = true
     } else {
       isPlayingPlayList.value = false
@@ -47,12 +49,36 @@ watch(
 watch(
   () => isPlaying.value,
   (newValue) => {
-    if (newValue && audioStore.currentMusic.playlist.id === id) {
+    if (newValue && audioStore.currentMusic.playlist.id === displayedId.value) {
       isPlayingPlayList.value = true
     } else {
       isPlayingPlayList.value = false
     }
   }
+)
+
+onBeforeRouteUpdate((to) => {
+  const newId = to.params.id
+  displayedId.value = newId
+
+  if (isPlaying.value && newId == audioStore.currentMusic.playlist.id) {
+    isPlayingPlayList.value = true
+  } else {
+    isPlayingPlayList.value = false
+  }
+  // Aquí puedes agregar la lógica que necesites para manejar el nuevo ID
+})
+
+watch(
+  () => props.id,
+  (newId) => {
+    if (isPlaying.value && newId == audioStore.currentMusic.playlist.id) {
+      isPlayingPlayList.value = true
+    } else {
+      isPlayingPlayList.value = false
+    }
+  },
+  { immediate: true } // Para que se ejecute inmediatamente
 )
 </script>
 
