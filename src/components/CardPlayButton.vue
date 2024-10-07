@@ -66,7 +66,6 @@ onBeforeRouteUpdate((to) => {
   } else {
     isPlayingPlayList.value = false
   }
-  // Aquí puedes agregar la lógica que necesites para manejar el nuevo ID
 })
 
 watch(
@@ -78,7 +77,7 @@ watch(
       isPlayingPlayList.value = false
     }
   },
-  { immediate: true } // Para que se ejecute inmediatamente
+  { immediate: true }
 )
 </script>
 
@@ -87,6 +86,4 @@ watch(
     <PauseIcon v-if="isPlayingPlayList" />
     <PlayIcon v-else />
   </button>
-  {{ typeof id }}
-  {{ id }}
 </template>
