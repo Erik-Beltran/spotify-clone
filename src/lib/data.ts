@@ -311,7 +311,7 @@ export const songs: Song[] = [
   }
 ]
 
-export const getMusic = (id) => {
+export const getMusic = (id: string | string[]) => {
   const playList = allPlaylists.find((playList) => playList.id === id)
   const playListSongs = songs.filter((song) => song.albumId === playList?.albumId)
 

@@ -21,14 +21,14 @@ const audioStore = useAudioStore(pinia)
 
 const isPlaying = computed(() => audioStore.isPlaying)
 const currentMusic = computed(() => audioStore.currentMusic)
-const darkColor = computed(() => audioStore.currentMusic.playlist?.color.dark || '#000')
+const darkColor = computed(() => audioStore.currentMusic.playlist?.color?.dark || '#000')
 
-const audioElement = ref(null)
+const audioElement = ref<HTMLAudioElement | null>(null)
 const audioSrc = ref('')
 const isReadyToPlay = ref(false)
 const volumeRef = ref(100)
 const previousVolumeRef = ref(100)
-const duration = ref<number | null>(null)
+const duration = ref<number | string>(0)
 const currentTime = ref(0)
 const isMobile = ref(window.innerWidth < 1024)
 
@@ -121,19 +121,25 @@ watch(
 watch(
   () => volumeRef.value,
   (newValue: any, oldValue) => {
-    audioElement.value.volume = newValue / 100
-    previousVolumeRef.value = oldValue
+    if (audioElement.value) {
+      audioElement.value.volume = newValue / 100
+      previousVolumeRef.value = oldValue
+    }
   }
 )
 
-const updateVolume = (newValue) => {
-  audioElement.value.volume = newValue / 100
-  volumeRef.value = newValue
+const updateVolume = (newValue: any) => {
+  if (audioElement.value) {
+    audioElement.value.volume = newValue / 100
+    volumeRef.value = newValue
+  }
 }
 
-const updatePlaybackTime = (event) => {
-  const value = event.target.value
-  audioElement.value.currentTime = value
+const updatePlaybackTime = (event: any) => {
+  if (audioElement.value) {
+    const value = event.target.value
+    audioElement.value.currentTime = value
+  }
 }
 </script>
 <template>
@@ -164,7 +170,7 @@ const updatePlaybackTime = (event) => {
             v-model="currentTime"
             @input="updatePlaybackTime"
           />
-          <span v-if="duration" v-text="formatTime(duration)" />
+          <span v-if="duration" v-text="formatTime(Number(duration))" />
         </div>
       </div>
     </div>

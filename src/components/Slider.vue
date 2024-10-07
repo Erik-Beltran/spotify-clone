@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import { watch } from 'vue'
 
 const props = defineProps<{
-  max: Number
-  initialValue: Number
+  max: number | string
+  initialValue: number
 }>()
 
 const { max, initialValue } = props
@@ -27,6 +27,8 @@ const updateValue = (event: any) => {
     min="0"
     v-model="value"
   />
+  {{ typeof max }}
+  {{ max }}
 </template>
 
 <style>

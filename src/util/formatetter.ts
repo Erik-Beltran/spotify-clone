@@ -1,4 +1,4 @@
-export const formatTime = (time) => {
+export const formatTime = (time: number) => {
   if (time == null) return `0:00`
 
   const seconds = Math.floor(time % 60)

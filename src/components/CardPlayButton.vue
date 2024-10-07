@@ -8,11 +8,12 @@ import { getMusic } from '@/lib/data'
 import { ref } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 
-const props = defineProps({
-  id: String
-})
+const props = defineProps<{
+  id: string | string[]
+}>()
 const { id } = props
-const displayedId = ref(id) // Variable reactiva para mostrar el ID
+
+const displayedId = ref(id)
 
 const audioStore = useAudioStore(pinia)
 const isPlaying = computed(() => audioStore.isPlaying)
@@ -25,7 +26,6 @@ const handleClick = () => {
   }
 
   const { playList, playListSongs } = getMusic(displayedId.value)
-
   audioStore.setCurrentMusic({
     songs: playListSongs,
     song: playListSongs[0],
@@ -87,4 +87,6 @@ watch(
     <PauseIcon v-if="isPlayingPlayList" />
     <PlayIcon v-else />
   </button>
+  {{ typeof id }}
+  {{ id }}
 </template>
