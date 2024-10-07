@@ -128,6 +128,7 @@ watch(
 
 const updateVolume = (newValue) => {
   audioElement.value.volume = newValue / 100
+  volumeRef.value = newValue
 }
 
 const updatePlaybackTime = (event) => {

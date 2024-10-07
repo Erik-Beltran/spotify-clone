@@ -30,9 +30,11 @@ const updateValue = (event: any) => {
 </template>
 
 <style>
+input[type='range'] {
+  outline: 1px solid white;
+}
+
 input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
   opacity: 0;
   transition: opacity 0.2s;
 }
