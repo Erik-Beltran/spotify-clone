@@ -2,7 +2,7 @@
 import type { Song } from '@/types/types'
 import TimeIcon from './icons/IconTime.vue'
 const props = defineProps<{
-  songs: Song[]
+  songs: any
 }>()
 
 const { songs } = props

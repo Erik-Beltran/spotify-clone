@@ -1,6 +1,5 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { type Playlist } from '@/lib/data'
 
 export const useAudioStore = defineStore('audio', () => {
   const isPlaying = ref(false)
@@ -11,7 +10,7 @@ export const useAudioStore = defineStore('audio', () => {
   })
 
   const setIsPlaying = (value: Boolean) => {
-    isPlaying.value = value
+    isPlaying.value = value ? true : false
   }
 
   const setCurrentMusic = (music) => {
