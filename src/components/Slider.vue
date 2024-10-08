@@ -27,8 +27,6 @@ const updateValue = (event: any) => {
     min="0"
     v-model="value"
   />
-  {{ typeof max }}
-  {{ max }}
 </template>
 
 <style>
