@@ -2,7 +2,6 @@
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 import { watch } from 'vue'
-import { computed } from 'vue'
 
 import { allPlaylists, songs } from '@/lib/data'
 import PlayListTable from './PlayListTable.vue'
@@ -16,8 +15,6 @@ const { id } = route.params
 const playList = ref(allPlaylists.find((playList) => playList.id === id))
 const playListSongs = ref(songs.filter((song) => song.albumId === playList.value?.albumId))
 const darkColor = ref(playList.value?.color.dark)
-
-const songsList = computed(() => playListSongs.value)
 
 watch(
   () => route.params.id,
@@ -34,7 +31,6 @@ watch(
       <button @click="$router.go(-1)" class="blcok lg:hidden">
         <ArrowBackIcon />
       </button>
-
       <header class="flex lg:flex-row gap-8 px-6 pt-10 flex-col">
         <picture class="h-52 w-52 flex-none aspect-auto">
           <img
@@ -67,7 +63,7 @@ watch(
       </div>
 
       <section class="lg:p-8 mt-2">
-        <PlayListTable :songs="songsList" />
+        <PlayListTable :songs="playListSongs" :key="playList.albumId" />
       </section>
     </div>
     <div

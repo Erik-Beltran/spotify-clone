@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { watch } from 'vue'
 
 const props = defineProps<{
   max: number | string

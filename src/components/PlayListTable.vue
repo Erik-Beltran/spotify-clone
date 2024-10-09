@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Song } from '@/types/types'
 import TimeIcon from './icons/IconTime.vue'
 const props = defineProps<{
   songs: any
@@ -20,8 +19,9 @@ const { songs } = props
     </thead>
 
     <tr
-      class="border-spacing-0 text-gray-300 text-sm font-light hover:bg-white/10 overflow-hidden transition duration-300"
       v-for="(song, index) in songs"
+      :key="index"
+      class="border-spacing-0 text-gray-300 text-sm font-light hover:bg-white/10 overflow-hidden transition duration-300"
     >
       <td class="px-4 py-2 rounded-tl-lg rounded-bl-lg w-5 hidden lg:table-cell">
         {{ index + 1 }}
